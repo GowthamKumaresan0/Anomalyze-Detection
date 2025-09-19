@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Web Log Producer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <div class="navbar">
+    <p class="title">Web Log Producer → Kafka</p>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <h1>Send Logs to Kafka</h1>
+      <p class="subtitle">Choose a log level and enter a message. The log will be sent to the <code>logs</code> Kafka topic.</p>
+
+      <div class="row">
+        <div>
+          <label for="level">Level</label>
+          <select id="level">
+            <option>INFO</option>
+            <option>WARN</option>
+            <option>ERROR</option>
+            <option>DEBUG</option>
+          </select>
+        </div>
+        <div>
+          <label for="key">Kafka Key (optional)</label>
+          <input id="key" type="text" placeholder="web" />
+        </div>
+      </div>
+
+      <label for="text">Message</label>
+      <textarea id="text" rows="4" placeholder="Type your log message here..."></textarea>
+
+      <button id="sendBtn">Send to Kafka</button>
+
+      <div id="preview" class="log" style="display:none;"></div>
+      <p id="status" class="status"></p>
+    </div>
+
+    <div class="footer">
+      <p>Logs are sent to Kafka topic <code>logs</code>.  
+      Pipeline: Web → Kafka → Drain3 → Spark(LogBERT) → anomalies</p>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="script.js" defer></script>
+</body>
+</html>

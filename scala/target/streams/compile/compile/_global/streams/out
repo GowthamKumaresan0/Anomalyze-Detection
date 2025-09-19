@@ -1,0 +1,11 @@
+[0m[[0m[33mwarn[0m] [0m[0m/home/gowth/Documents/BDA/scala/src/main/scala/App.scala:19:16: Implicit definition should have explicit type (inferred spray.json.RootJsonFormat[ProduceRequest]) [quickfixable][0m
+[0m[[0m[33mwarn[0m] [0m[0m  implicit val produceRequestFormat = jsonFormat3(ProduceRequest)[0m
+[0m[[0m[33mwarn[0m] [0m[0m               ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/gowth/Documents/BDA/scala/src/main/scala/Consumer.scala:4:8: not found: object play[0m
+[0m[[0m[31merror[0m] [0m[0mimport play.api.libs.json._  // for JSON parsing[0m
+[0m[[0m[31merror[0m] [0m[0m       ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/gowth/Documents/BDA/scala/src/main/scala/Consumer.scala:25:18: not found: value Json[0m
+[0m[[0m[31merror[0m] [0m[0m      val json = Json.parse(record.value())[0m
+[0m[[0m[31merror[0m] [0m[0m                 ^[0m
+[0m[[0m[33mwarn[0m] [0m[0mone warning found[0m
+[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m

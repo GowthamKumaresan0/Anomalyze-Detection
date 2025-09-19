@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -e  # Exit on error
+
+echo "Starting Kafka and Zookeeper with docker-compose..."
+docker-compose up -d
+
+echo "Waiting for Kafka to be ready..."
+# Wait until Kafka is ready to accept connections
+until docker exec kafka kafka-broker-api-versions.sh --bootstrap-server localhost:9092 &>/dev/null
+do
+  echo "Kafka not ready yet. Waiting..."
+  sleep 5
+done
+
+echo "Kafka is ready!"
+
+echo "Creating topics..."
+
+# Create 'processed-logs' topic if it doesn't exist
+docker exec kafka kafka-topics.sh --bootstrap-server localhost:9092 --list | grep -q processed-log || \
+docker exec kafka kafka-topics.sh --bootstrap-server localhost:9092 --create --topic processed-log --partitions 1 --replication-factor 1
+
+
+# Create 'anomalies' topic if it doesn't exist
+docker exec kafka kafka-topics.sh --bootstrap-server localhost:9092 --list | grep -q anomalies || \
+docker exec kafka kafka-topics.sh --bootstrap-server localhost:9092 --create --topic anomalies --partitions 1 --replication-factor 1
+
+echo "Topics created (if they didn't exist already)."
+
+echo "Kafka setup completed!"
