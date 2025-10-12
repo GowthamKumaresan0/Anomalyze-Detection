@@ -1,117 +1,293 @@
-/* Base */
-:root {
-  --brand: #5E3B76;       /* your preferred purple */
-  --brand-weak: #7b5b93;
-  --text: #1f2937;
-  --muted: #6b7280;
-  --border: #e5e7eb;
-  --bg: #fafbfc;
-  --card: #ffffff;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LogBERT Event Producer</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-* { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
-body {
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
-  color: var(--text);
-  background: var(--bg);
-}
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
 
-/* Top bar */
-.navbar {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: var(--brand);
-  color: #fff;
-  padding: 14px 18px;
-  box-shadow: 0 2px 14px rgba(0,0,0,.08);
-}
-.navbar .title {
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 700;
-}
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: 40px;
+      max-width: 600px;
+      width: 100%;
+      animation: slideIn 0.5s ease-out;
+    }
 
-/* Page */
-.container {
-  max-width: 880px;
-  margin: 28px auto;
-  padding: 0 16px;
-}
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-/* Card */
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 18px;
-  box-shadow: 0 6px 24px rgba(0,0,0,.05);
-}
+    h1 {
+      color: #2d3748;
+      font-size: 2rem;
+      margin-bottom: 10px;
+      text-align: center;
+      font-weight: 700;
+    }
 
-h1 {
-  font-size: 1.6rem;
-  margin: 0 0 12px;
-}
-.subtitle {
-  color: var(--muted);
-  margin: 0 0 18px;
-}
+    .subtitle {
+      text-align: center;
+      color: #718096;
+      margin-bottom: 30px;
+      font-size: 0.95rem;
+    }
 
-/* Form */
-label { display: block; font-weight: 600; margin: 12px 0 6px; }
-select, textarea, input[type="text"] {
-  width: 100%;
-  padding: 11px 12px;
-  border: 1px solid #cbd5e1;
-  border-radius: 10px;
-  outline: none;
-  background: #fff;
-  transition: border .15s ease, box-shadow .15s ease;
-  font-size: 0.98rem;
-}
-select:focus, textarea:focus, input[type="text"]:focus {
-  border-color: var(--brand-weak);
-  box-shadow: 0 0 0 3px rgba(94,59,118,.15);
-}
+    .form-group {
+      margin-bottom: 24px;
+    }
 
-.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-@media (max-width: 640px) { .row { grid-template-columns: 1fr; } }
+    label {
+      display: block;
+      color: #4a5568;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
 
-button {
-  margin-top: 14px;
-  padding: 11px 16px;
-  border-radius: 10px;
-  border: 0;
-  background: var(--brand);
-  color: #fff;
-  font-weight: 700;
-  cursor: pointer;
-  transition: transform .05s ease, filter .15s ease, opacity .2s ease;
-}
-button:hover { filter: brightness(1.05); }
-button:active { transform: translateY(1px); }
-button:disabled { opacity: .6; cursor: not-allowed; }
+    input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: #f7fafc;
+    }
 
-/* Preview + status */
-.log {
-  white-space: pre-wrap;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  background: #f8f8fa;
-  border: 1px dashed #d1d5db;
-  border-radius: 10px;
-  padding: 10px;
-  margin-top: 12px;
-  color: #374151;
-}
-.status { margin-top: 10px; font-weight: 600; }
-.ok { color: #186a3b; }
-.err { color: #8b0000; }
+    input:focus {
+      outline: none;
+      border-color: #667eea;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
 
-/* Footer */
-.footer {
-  text-align: center;
-  color: var(--muted);
-  margin-top: 20px;
-  font-size: 0.9rem;
-}
+    input::placeholder {
+      color: #a0aec0;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    button {
+      flex: 1;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    button[type="submit"] {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    button[type="submit"]:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    button[type="submit"]:active {
+      transform: translateY(0);
+    }
+
+    button[type="button"] {
+      background: #e2e8f0;
+      color: #4a5568;
+    }
+
+    button[type="button"]:hover {
+      background: #cbd5e0;
+    }
+
+    #response {
+      margin-top: 30px;
+      padding: 20px;
+      background: #f7fafc;
+      border-radius: 10px;
+      border-left: 4px solid #667eea;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      color: #2d3748;
+      max-height: 300px;
+      overflow-y: auto;
+      display: none;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    #response.show {
+      display: block;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    #response.success {
+      border-left-color: #48bb78;
+      background: #f0fff4;
+    }
+
+    #response.error {
+      border-left-color: #f56565;
+      background: #fff5f5;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .status-badge.success {
+      background: #c6f6d5;
+      color: #22543d;
+    }
+
+    .status-badge.error {
+      background: #fed7d7;
+      color: #742a2a;
+    }
+
+    .helper-text {
+      font-size: 0.85rem;
+      color: #718096;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 30px 20px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🚀 LogBERT Event Producer</h1>
+    <p class="subtitle">Send events to your logging system</p>
+    
+    <form id="eventForm">
+      <div class="form-group">
+        <label for="events">Events *</label>
+        <input type="text" id="events" name="events" placeholder="E5,E22,E5" required>
+        <div class="helper-text">Enter comma-separated event IDs</div>
+      </div>
+
+      <div class="form-group">
+        <label for="label">Label</label>
+        <input type="text" id="label" name="label" placeholder="Success">
+        <div class="helper-text">Optional: Success or Fail</div>
+      </div>
+
+      <div class="form-group">
+        <label for="key">Key</label>
+        <input type="text" id="key" name="key" placeholder="web">
+        <div class="helper-text">Optional: Defaults to "web"</div>
+      </div>
+
+      <div class="button-group">
+        <button type="submit">Send Event</button>
+        <button type="button" onclick="document.getElementById('eventForm').reset(); document.getElementById('response').classList.remove('show');">Clear</button>
+      </div>
+    </form>
+
+    <pre id="response"></pre>
+  </div>
+
+  <script>
+    document.getElementById('eventForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const responseEl = document.getElementById('response');
+      const formData = new FormData(e.target);
+      
+      // Show loading state
+      responseEl.innerHTML = '<span class="status-badge">Loading...</span>\nSending request...';
+      responseEl.className = 'show';
+      
+      try {
+        // Simulated API call - replace with your actual endpoint
+        const data = {
+          events: formData.get('events'),
+          label: formData.get('label') || undefined,
+          key: formData.get('key') || 'web'
+        };
+        
+        // Replace this with your actual API endpoint
+        // const response = await fetch('YOUR_API_ENDPOINT', {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify(data)
+        // });
+        
+        // Simulated response
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Mock successful response
+        responseEl.innerHTML = '<span class="status-badge success">✓ Success</span>\n' + 
+                              JSON.stringify(data, null, 2);
+        responseEl.classList.add('success');
+        responseEl.classList.remove('error');
+        
+      } catch (error) {
+        responseEl.innerHTML = '<span class="status-badge error">✗ Error</span>\n' + 
+                              error.message;
+        responseEl.classList.add('error');
+        responseEl.classList.remove('success');
+      }
+    });
+  </script>
+</body>
+</html>

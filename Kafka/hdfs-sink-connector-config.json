@@ -1,0 +1,17 @@
+{
+  "name": "hdfs-sink-connector",
+  "config": {
+    "connector.class": "io.confluent.connect.hdfs.HdfsSinkConnector",
+    "tasks.max": "1",
+    "topics": "anomalies",
+    "hdfs.url": "hdfs://<HDFS_HOST>:9000",
+    "flush.size": "1000",
+    "rotate.interval.ms": "60000",
+    "hdfs.dir": "/kafka/anomalies",
+    "value.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "errors.tolerance": "all",
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true"
+  }
+}

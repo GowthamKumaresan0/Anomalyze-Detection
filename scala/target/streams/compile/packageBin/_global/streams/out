@@ -1,17 +1,1 @@
-[0m[[0m[0mdebug[0m] [0m[0mPackaging /home/gowth/Documents/BDA/scala/target/scala-2.13/kafkalogger_2.13-0.1.jar ...[0m
-[0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
-[0m[[0m[0mdebug[0m] [0m[0m	ProduceRequest.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /home/gowth/Documents/BDA/scala/target/scala-2.13/classes/ProduceRequest.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	App$.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /home/gowth/Documents/BDA/scala/target/scala-2.13/classes/App$.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	JsonFormats$.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /home/gowth/Documents/BDA/scala/target/scala-2.13/classes/JsonFormats$.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	ProduceRequest$.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /home/gowth/Documents/BDA/scala/target/scala-2.13/classes/ProduceRequest$.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	App.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /home/gowth/Documents/BDA/scala/target/scala-2.13/classes/App.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	App$delayedInit$body.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /home/gowth/Documents/BDA/scala/target/scala-2.13/classes/App$delayedInit$body.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	JsonFormats.class[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /home/gowth/Documents/BDA/scala/target/scala-2.13/classes/JsonFormats.class[0m
-[0m[[0m[0mdebug[0m] [0m[0mDone packaging.[0m
+[0m[[0m[0mdebug[0m] [0m[0mJar uptodate: /home/gowth/Documents/BDA/scala/target/scala-2.13/kafkalogger_2.13-0.1.jar[0m

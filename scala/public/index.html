@@ -1,55 +1,426 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Web Log Producer</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LogBERT Event Producer</title>
+  <style>
+    /* Dark Theme Base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      /* Dark background for the body */
+      background: #121212; /* A very dark gray */
+      min-height: 100vh;
+      padding: 40px 20px;
+      /* Light text color */
+      color: #e0e0e0; 
+    }
+
+    .header {
+      max-width: 800px;
+      margin: 0 auto 40px;
+    }
+
+    .header h1 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      /* Ensure header text is bright */
+      color: #ffffff; 
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      /* Muted light gray for description */
+      color: #9e9e9e; 
+      font-size: 0.95rem;
+    }
+
+    .container {
+      /* Main content box background */
+      background: #1e1e1e; 
+      border-radius: 8px;
+      /* Darker, subtle border */
+      border: 1px solid #333333; 
+      padding: 32px;
+      max-width: 800px;
+      margin: 0 auto;
+      /* Subtle shadow, less prominent in dark mode */
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5); 
+    }
+
+    .section-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      /* Accent/slightly brighter color for title (Vibrant Purple) */
+      color: #bb86fc; 
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 24px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      /* Standard light label text */
+      color: #e0e0e0; 
+    }
+
+    .label-required::after {
+      /* Red accent remains for required field */
+      content: "*";
+      color: #cf6679; 
+      margin-left: 4px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      /* Input field border color */
+      border: 1px solid #424242; 
+      border-radius: 6px;
+      font-size: 0.9375rem;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      /* Input background */
+      background: #2c2c2c; 
+      /* Input text color */
+      color: #ffffff; 
+      font-family: inherit;
+    }
+
+    input:hover {
+      /* Lighter border on hover */
+      border-color: #616161; 
+    }
+
+    input:focus {
+      outline: none;
+      /* Primary cyan/teal focus color */
+      border-color: #03dac6; 
+      /* Subtle box shadow on focus */
+      box-shadow: 0 0 0 3px rgba(3, 218, 198, 0.15); 
+    }
+
+    input::placeholder {
+      /* Muted placeholder text */
+      color: #757575; 
+    }
+
+    .helper-text {
+      font-size: 0.8125rem;
+      /* Subtle light gray helper text */
+      color: #a0a0a0; 
+      line-height: 1.4;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+      padding-top: 24px;
+      /* Separator line color */
+      border-top: 1px solid #333333; 
+    }
+
+    button {
+      padding: 10px 20px;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+
+    /* Primary Submit Button */
+    button[type="submit"] {
+      /* Primary accent color (Vibrant Purple) */
+      background: #bb86fc; 
+      color: #121212; /* Dark text for contrast */
+      border-color: #bb86fc;
+    }
+
+    button[type="submit"]:hover {
+      /* Slightly darker on hover */
+      background: #a672e8; 
+      border-color: #a672e8;
+    }
+
+    button[type="submit"]:active {
+      /* Even darker on active */
+      background: #905dcf; 
+    }
+
+    /* Secondary Clear Button */
+    button[type="button"] {
+      background: #2c2c2c; /* Dark background */
+      color: #e0e0e0; /* Light text */
+      border-color: #424242; /* Dark border */
+    }
+
+    button[type="button"]:hover {
+      background: #3a3a3a; /* Slightly lighter hover background */
+      border-color: #616161; /* Lighter hover border */
+    }
+
+    #response {
+      margin-top: 24px;
+      padding: 16px;
+      /* Response block background */
+      background: #2c2c2c; 
+      /* Response block border */
+      border: 1px solid #424242; 
+      border-radius: 6px;
+      font-family: 'SF Mono', Monaco, 'Cascadia Code', Consolas, monospace;
+      font-size: 0.8125rem;
+      /* Response block text color */
+      color: #e0e0e0; 
+      max-height: 400px;
+      overflow-y: auto;
+      display: none;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      line-height: 1.5;
+    }
+
+    #response.show {
+      display: block;
+    }
+
+    /* Status Colors for Response Block */
+    #response.success {
+      /* Green success background */
+      background: #21352e; 
+      /* Green success border */
+      border-color: #387638; 
+    }
+
+    #response.error {
+      /* Red error background */
+      background: #352121; 
+      /* Red error border */
+      border-color: #763838; 
+    }
+
+    .status-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      /* Separator line color */
+      border-bottom: 1px solid #333333; 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+    }
+
+    /* Badge Coloration - Accessible Dark Mode colors */
+    .status-badge.success {
+      background: #4caf50; /* Solid green badge */
+      color: #121212; 
+    }
+
+    .status-badge.error {
+      background: #cf6679; /* Solid red badge */
+      color: #121212;
+    }
+
+    .status-badge.loading {
+      background: #03dac6; /* Primary accent for loading (Cyan/Teal) */
+      color: #121212;
+    }
+
+    .timestamp {
+      font-size: 0.75rem;
+      /* Muted timestamp color */
+      color: #9e9e9e; 
+      font-family: 'SF Mono', Monaco, monospace;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 20px 16px;
+      }
+
+      .header {
+        margin-bottom: 24px;
+      }
+
+      .header h1 {
+        font-size: 1.5rem;
+      }
+
+      .container {
+        padding: 24px 20px;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+
+    /* Subtle focus indicators for accessibility */
+    button:focus-visible,
+    input:focus-visible {
+      /* Use the accent color for focus */
+      outline: 2px solid #03dac6; 
+      outline-offset: 2px;
+    }
+  </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <div class="navbar">
-    <p class="title">Web Log Producer → Kafka</p>
+  <div class="header">
+    <h1>LogBERT Event Producer</h1>
+    <p>Submit log events to the Kafka stream for anomaly detection processing</p>
   </div>
 
   <div class="container">
-    <div class="card">
-      <h1>Send Logs to Kafka</h1>
-      <p class="subtitle">Choose a log level and enter a message. The log will be sent to the <code>logs</code> Kafka topic.</p>
-
-      <div class="row">
-        <div>
-          <label for="level">Level</label>
-          <select id="level">
-            <option>INFO</option>
-            <option>WARN</option>
-            <option>ERROR</option>
-            <option>DEBUG</option>
-          </select>
+    <form id="eventForm">
+      <div class="section-title">Event Details</div>
+      
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="events" class="label-required">Event Sequence</label>
+          <input 
+            type="text" 
+            id="events" 
+            name="events" 
+            placeholder="E5, E22, E5" 
+            required
+            autocomplete="off"
+          >
+          <div class="helper-text">Comma-separated event identifiers that form a log sequence</div>
         </div>
-        <div>
-          <label for="key">Kafka Key (optional)</label>
-          <input id="key" type="text" placeholder="web" />
+
+        <div class="form-group">
+          <label for="label">Classification Label</label>
+          <input 
+            type="text" 
+            id="label" 
+            name="label" 
+            placeholder="Success"
+            autocomplete="off"
+          >
+          <div class="helper-text">Optional classification (e.g., Success, Fail, Error)</div>
+        </div>
+
+        <div class="form-group">
+          <label for="key">Producer Key</label>
+          <input 
+            type="text" 
+            id="key" 
+            name="key" 
+            placeholder="web"
+            autocomplete="off"
+          >
+          <div class="helper-text">Kafka partition key for event routing (defaults to "web")</div>
         </div>
       </div>
 
-      <label for="text">Message</label>
-      <textarea id="text" rows="4" placeholder="Type your log message here..."></textarea>
+      <div class="button-group">
+        <button type="submit">Submit Event</button>
+        <button type="button" onclick="handleClear()">Clear Form</button>
+      </div>
+    </form>
 
-      <button id="sendBtn">Send to Kafka</button>
-
-      <div id="preview" class="log" style="display:none;"></div>
-      <p id="status" class="status"></p>
-    </div>
-
-    <div class="footer">
-      <p>Logs are sent to Kafka topic <code>logs</code>.  
-      Pipeline: Web → Kafka → Drain3 → Spark(LogBERT) → anomalies</p>
-    </div>
+    <pre id="response"></pre>
   </div>
 
-  <!-- JS -->
-  <script src="script.js" defer></script>
+  <script>
+    function handleClear() {
+      document.getElementById('eventForm').reset();
+      const responseEl = document.getElementById('response');
+      responseEl.classList.remove('show', 'success', 'error');
+      responseEl.innerHTML = ''; // Also clear the content
+    }
+
+    function formatTimestamp() {
+      const now = new Date();
+      return now.toLocaleTimeString('en-US', { 
+        hour12: false, 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit' 
+      });
+    }
+
+    document.getElementById('eventForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const responseEl = document.getElementById('response');
+      const formData = new FormData(e.target);
+      
+      const eventsInput = formData.get('events');
+      const eventsArray = eventsInput.split(',').map(e => e.trim()).filter(e => e);
+      
+      const data = {
+        events: eventsArray,
+        label: formData.get('label') || undefined,
+        key: formData.get('key') || 'web'
+      };
+      
+      const timestamp = formatTimestamp();
+      responseEl.innerHTML = `<div class="status-line"><span class="status-badge loading">⟳ Processing</span><span class="timestamp">${timestamp}</span></div>Sending request to Kafka producer...`;
+      responseEl.className = 'show';
+      
+      try {
+        const response = await fetch('http://localhost:3000/produce', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        const successTimestamp = formatTimestamp();
+        
+        if (result.ok) {
+          responseEl.innerHTML = `<div class="status-line"><span class="status-badge success">✓ Success</span><span class="timestamp">${successTimestamp}</span></div>` + 
+                                JSON.stringify(result, null, 2);
+          responseEl.classList.add('success');
+          responseEl.classList.remove('error');
+        } else {
+          throw new Error(result.error || 'Unknown error occurred');
+        }
+      } catch (error) {
+        const errorTimestamp = formatTimestamp();
+        responseEl.innerHTML = `<div class="status-line"><span class="status-badge error">✗ Failed</span><span class="timestamp">${errorTimestamp}</span></div>` + 
+                              `Error: ${error.message}`;
+        responseEl.classList.add('error');
+        responseEl.classList.remove('success');
+      }
+    });
+  </script>
 </body>
 </html>
